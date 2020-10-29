@@ -1,10 +1,13 @@
 import axios from 'axios';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import createPersistedState from 'use-persisted-state';
 import Button from './components/Button';
 import StoredState from './components/StoredState';
 import TextInput from './components/TextInput';
 import Flex from './styled-components/Flex';
+import ImageStage from './styled-components/ImageStage';
 import Wrapper from './styled-components/Wrapper';
 import {
   clearFromLocalStorage,
@@ -13,8 +16,6 @@ import {
   processResponse,
   setToLocalStorage,
 } from './util/util';
-import createPersistedState from 'use-persisted-state';
-import dynamic from 'next/dynamic';
 
 const DefaultImage = dynamic(() => import('./components/DefaultImage'), {
   ssr: false,
@@ -30,6 +31,8 @@ export default function Home() {
   const [fetchingUrl, setFetchingUrl] = useState(false);
   const [urlError, setUrlError] = useState('');
   const [defaultImgSrc, setDefaultImgSrc] = useState(null);
+
+  // Optimization data and processed URL stored in local storage
   const [optimizationData, setOptimizationData] = createPersistedState(
     'optimizationData',
   )(null);
@@ -38,6 +41,7 @@ export default function Home() {
   );
 
   useEffect(() => {
+    // Set processed values on first load
     setDefaultImgSrc(loadFromLocalStorage(IMAGE_KEY, null));
     setUrl(loadFromLocalStorage(IMAGE_KEY, ''));
   }, []);
@@ -55,7 +59,6 @@ export default function Home() {
     clearFromLocalStorage(IMAGE_KEY);
     setDefaultImgSrc(null);
     setTimeout(() => {
-      // TODO: progress bar
       axios
         .get(url, {
           responseType: 'arraybuffer',
@@ -88,13 +91,10 @@ export default function Home() {
       <Head>
         <title>Lazy Loading Images</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta http-equiv="cache-control" content="no-cache" />
-        <meta http-equiv="expires" content="0" />
-        <meta http-equiv="pragma" content="no-cache" />
       </Head>
       <Flex row>
         <TextInput
-          style={{ marginRight: 8, minWidth: 200 }}
+          style={{ marginRight: 8 }}
           value={url}
           onChange={handleUrlChange}
           error={urlError}
@@ -108,11 +108,15 @@ export default function Home() {
         <div style={{ marginTop: 8 }}>Ready to render. Do a hard-refresh.</div>
       )}
       <Flex row style={{ marginTop: 16 }}>
-        <DefaultImage src={defaultImgSrc} />
-        <OptimizedImage
-          src={defaultImgSrc}
-          optimizationData={optimizationData}
-        />
+        <ImageStage>
+          <DefaultImage src={defaultImgSrc} />
+        </ImageStage>
+        <ImageStage>
+          <OptimizedImage
+            src={defaultImgSrc}
+            optimizationData={optimizationData}
+          />
+        </ImageStage>
       </Flex>
     </Wrapper>
   );

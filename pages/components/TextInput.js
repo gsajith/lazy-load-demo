@@ -6,6 +6,7 @@ const StyledInput = styled.input`
   padding: 8px;
   border-radius: 6px;
   height: 100%;
+  min-width: 200px;
 `;
 
 const Error = styled.div`

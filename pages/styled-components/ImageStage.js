@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ImageStage = styled.div`
+const StyledImageStage = styled.div`
   max-width: calc(100vw - 30px);
   max-height: calc(100vw - 30px);
   background: #eee;
@@ -14,4 +14,7 @@ const ImageStage = styled.div`
   display: block;
 `;
 
+const ImageStage = (props) => {
+  return <StyledImageStage>{props.children}</StyledImageStage>;
+};
 export default ImageStage;

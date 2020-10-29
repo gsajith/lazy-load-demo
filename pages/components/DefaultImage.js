@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Flex from '../styled-components/Flex';
 import ImageIcon from '../styled-components/ImageIcon';
 import ImageMessage from '../styled-components/ImageMessage';
-import ImageStage from '../styled-components/ImageStage';
 
 const PlaceholderDiv = styled(Flex)`
   position: absolute;
@@ -14,9 +13,13 @@ const PlaceholderDiv = styled(Flex)`
   align-items: center;
 `;
 
+/**
+ * Show an image with default loading, no optimizations.
+ * @param {URL} src Src url to load for this image
+ */
 const DefaultImage = ({ src }) => {
   return (
-    <ImageStage>
+    <>
       <PlaceholderDiv>
         <ImageIcon src={'/image_placeholder.svg'} style={{ opacity: 0.2 }} />
         <ImageMessage>Default loaded image here.</ImageMessage>
@@ -36,7 +39,7 @@ const DefaultImage = ({ src }) => {
           }}
         />
       )}
-    </ImageStage>
+    </>
   );
 };
 

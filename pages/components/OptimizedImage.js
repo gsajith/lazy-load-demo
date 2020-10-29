@@ -1,10 +1,9 @@
+import { decode } from 'blurhash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Flex from '../styled-components/Flex';
 import ImageIcon from '../styled-components/ImageIcon';
 import ImageMessage from '../styled-components/ImageMessage';
-import ImageStage from '../styled-components/ImageStage';
-import { decode } from 'blurhash';
 import LoadingSpinner from '../styled-components/LoadingSpinner';
 
 const PlaceholderDiv = styled(Flex)`
@@ -40,7 +39,7 @@ const OptimizedImage = ({ src, optimizationData }) => {
   };
 
   return (
-    <ImageStage>
+    <>
       <PlaceholderDiv>
         <ImageIcon src={'/app_icon_placeholder.svg'} />
         <ImageMessage>Lazy-loaded here.</ImageMessage>
@@ -86,7 +85,7 @@ const OptimizedImage = ({ src, optimizationData }) => {
           }}
         />
       )}
-    </ImageStage>
+    </>
   );
 };
 
