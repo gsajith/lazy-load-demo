@@ -1,11 +1,11 @@
-import { decode } from 'blurhash';
-import React, { useEffect, useRef, useState } from 'react';
+import 'lazysizes';
+import 'lazysizes/plugins/blur-up/ls.blur-up';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Flex from '../styled-components/Flex';
 import ImageIcon from '../styled-components/ImageIcon';
 import ImageMessage from '../styled-components/ImageMessage';
 import LoadingSpinner from '../styled-components/LoadingSpinner';
-import 'lazysizes';
 
 const PlaceholderDiv = styled(Flex)`
   position: absolute;
@@ -17,38 +17,40 @@ const PlaceholderDiv = styled(Flex)`
   color: blue;
 `;
 
-const OptimizedImage = ({ src }) => {
-  const canvasRef = useRef(null);
-  const [opacity, setOpacity] = useState(0);
-
-  const onImageLoad = () => {
-    setOpacity(1);
-  };
-
+const OptimizedImage = ({ src, optimizationData }) => {
+  const [loading, setLoading] = useState(true);
   return (
     <>
       <PlaceholderDiv>
         <ImageIcon src={'/app_icon_placeholder.svg'} />
         <ImageMessage>Lazysizes load here.</ImageMessage>
       </PlaceholderDiv>
-      <img
-        src="https://images.unsplash.com/photo-1603850609984-ed9991df522f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&q=80"
-        className="lazyload"
-        data-src={src}
-        onLoad={onImageLoad}
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          transition: 'opacity 300ms ease-in',
-          opacity: opacity,
-        }}
-      />
+
+      {/* Styles for this stored in globals.css */}
+      {src && (
+        <img
+          data-lowsrc={optimizationData.smallerImageData}
+          className="lazyload mediabox-img"
+          data-src={src}
+          onLoad={() => setLoading(false)}
+          style={{
+            zIndex: 1,
+            opacity: loading ? 0 : 1,
+          }}
+        />
+      )}
+      {src && optimizationData && loading && (
+        <LoadingSpinner
+          size={'32px'}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            zIndex: 3,
+            transform: 'translate(-50%, -50%)',
+          }}
+        />
+      )}
     </>
   );
 };

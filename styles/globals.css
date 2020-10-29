@@ -24,3 +24,35 @@ a {
   margin: 0;
   box-sizing: border-box;
 }
+
+/* From: https://github.com/aFarkas/lazysizes/tree/master/plugins/blur-up */
+.mediabox-img.ls-blur-up-is-loading,
+.mediabox-img.lazyload:not([src]) {
+  visibility: hidden;
+}
+
+.ls-blur-up-img,
+.mediabox-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+
+.mediabox-img {
+  transition: opacity 500ms;
+}
+
+.ls-blur-up-img {
+  filter: blur(15px);
+  transition: filter 1500ms;
+}
+
+.ls-blur-up-img.ls-inview.ls-original-loaded {
+  filter: blur(0px);
+}

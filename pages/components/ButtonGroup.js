@@ -15,6 +15,7 @@ const ButtonGroup = ({ options, selected, setSelected }) => {
           } else if (options.length > 1) {
             style.borderRadius = 0;
           }
+          style.marginRight = '-2px';
 
           return (
             <Button
