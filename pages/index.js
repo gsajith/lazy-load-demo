@@ -35,7 +35,7 @@ export default function Home() {
   const [url, setUrl] = useState('');
   const [fetchingUrl, setFetchingUrl] = useState(false);
   const [urlError, setUrlError] = useState('');
-  const [defaultImgSrc, setDefaultImgSrc] = useState(null);
+  const [imgSrc, setImgSrc] = useState(null);
 
   // Optimization data and processed URL stored in local storage
   const [optimizationData, setOptimizationData] = createPersistedState(
@@ -51,7 +51,7 @@ export default function Home() {
 
   useEffect(() => {
     // Set processed values on first load
-    setDefaultImgSrc(loadFromLocalStorage(IMAGE_KEY, null));
+    setImgSrc(loadFromLocalStorage(IMAGE_KEY, null));
     setUrl(loadFromLocalStorage(IMAGE_KEY, ''));
   }, []);
 
@@ -66,7 +66,7 @@ export default function Home() {
   const doFetch = () => {
     setFetchingUrl(true);
     clearFromLocalStorage(IMAGE_KEY);
-    setDefaultImgSrc(null);
+    setImgSrc(null);
     setTimeout(() => {
       axios
         .get(url, {
@@ -93,6 +93,11 @@ export default function Home() {
   const handleUrlChange = (e) => {
     setUrlError('');
     setUrl(e.target.value);
+  };
+
+  const handleOptimizationModeSelected = (mode) => {
+    setOptimizationMode(mode);
+    setImgSrc(null);
   };
 
   return (
@@ -133,29 +138,24 @@ export default function Home() {
         <>
           <ButtonGroup
             options={optimizationModes}
-            setSelected={setOptimizationMode}
+            setSelected={handleOptimizationModeSelected}
             selected={optimizationMode}
           />
 
           <div style={{ marginTop: 8 }}>
-            Ready to render. Do a hard-refresh.
+            Ready to render. You must do a hard-refresh to see the full load
+            effect.
           </div>
         </>
       )}
       <Flex row style={{ marginTop: 16 }}>
         <ImageStage>
-          {optimizationMode === 'none' && <DefaultImage src={defaultImgSrc} />}
+          {optimizationMode === 'none' && <DefaultImage src={imgSrc} />}
           {optimizationMode === 'blurhash' && (
-            <OptimizedImage
-              src={defaultImgSrc}
-              optimizationData={optimizationData}
-            />
+            <OptimizedImage src={imgSrc} optimizationData={optimizationData} />
           )}
           {optimizationMode === 'lazysizes' && (
-            <LazySizesImage
-              src={defaultImgSrc}
-              optimizationData={optimizationData}
-            />
+            <LazySizesImage src={imgSrc} optimizationData={optimizationData} />
           )}
         </ImageStage>
       </Flex>

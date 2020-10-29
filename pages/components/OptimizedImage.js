@@ -44,21 +44,23 @@ const OptimizedImage = ({ src, optimizationData }) => {
         <ImageIcon src={'/app_icon_placeholder.svg'} />
         <ImageMessage>Blurhash load here.</ImageMessage>
       </PlaceholderDiv>
-      <canvas
-        ref={canvasRef}
-        width={optimizationData ? optimizationData.width : 0}
-        height={optimizationData ? optimizationData.height : 0}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          objectFit: 'contain',
-        }}
-      />
-      {optimizationData && (
+      {src && (
+        <canvas
+          ref={canvasRef}
+          width={optimizationData ? optimizationData.width : 0}
+          height={optimizationData ? optimizationData.height : 0}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            objectFit: 'contain',
+          }}
+        />
+      )}
+      {src && optimizationData && (
         <LoadingSpinner
           size={'32px'}
           style={{

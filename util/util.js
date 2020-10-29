@@ -57,10 +57,21 @@ const getImageData = (image) => {
 const encodeImageToBlurhash = async (imageUrl) => {
   const image = await loadImage(imageUrl);
   const imageData = getImageData(image);
+
+  const smallImageWidth = Math.min(40, Math.floor(imageData.width / 10));
+  let smallImageHeight;
+  if (smallImageWidth === 40) {
+    smallImageHeight = (40 / imageData.width) * imageData.height;
+  } else {
+    smallImageHeight = Math.floor(imageData.height) / 10;
+  }
+
+  const smallerImage = imageToDataUri(image, smallImageWidth, smallImageHeight);
   return {
     blurhash: encode(imageData.data, imageData.width, imageData.height, 4, 4),
     width: imageData.width,
     height: imageData.height,
+    smallerImageData: smallerImage,
   };
 };
 
@@ -68,3 +79,20 @@ export const processResponse = async (response, imageUrl) => {
   let blurhashData = await encodeImageToBlurhash(imageUrl);
   return { ...blurhashData };
 };
+
+// Resize an image with base64? Hopefully?
+function imageToDataUri(img, width, height) {
+  // create an off-screen canvas
+  var canvas = document.createElement('canvas'),
+    ctx = canvas.getContext('2d');
+
+  // set its dimension to target size
+  canvas.width = width;
+  canvas.height = height;
+
+  // draw source image into the off-screen canvas:
+  ctx.drawImage(img, 0, 0, width, height);
+
+  // encode image to data-uri with base64 version of compressed image
+  return canvas.toDataURL();
+}
