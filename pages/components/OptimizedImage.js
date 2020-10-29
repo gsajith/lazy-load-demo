@@ -58,15 +58,17 @@ const OptimizedImage = ({ src, optimizationData }) => {
           objectFit: 'contain',
         }}
       />
-      <LoadingSpinner
-        size={'32px'}
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      />
+      {optimizationData && (
+        <LoadingSpinner
+          size={'32px'}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        />
+      )}
       {src && (
         <img
           src={src}
