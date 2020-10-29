@@ -42,7 +42,7 @@ const OptimizedImage = ({ src, optimizationData }) => {
     <>
       <PlaceholderDiv>
         <ImageIcon src={'/app_icon_placeholder.svg'} />
-        <ImageMessage>Lazy-loaded here.</ImageMessage>
+        <ImageMessage>Optimized load here.</ImageMessage>
       </PlaceholderDiv>
       <canvas
         ref={canvasRef}

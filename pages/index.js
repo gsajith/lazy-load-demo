@@ -16,6 +16,7 @@ import {
   processResponse,
   setToLocalStorage,
 } from '../util/util';
+import Instructions from './styled-components/Instructions';
 
 const DefaultImage = dynamic(() => import('./components/DefaultImage'), {
   ssr: false,
@@ -89,15 +90,25 @@ export default function Home() {
   return (
     <Wrapper>
       <Head>
-        <title>Lazy Loading Images</title>
+        <title>Optimized Loading Images</title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           property="og:description"
-          content="Demo of lazy-loading images with blurhash."
+          content="Demo of optimized-loading images with blurhash."
         />
         <meta property="og:image" content="https://i.imgur.com/OIGX4XU.png" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
+
+      <Instructions>
+        <li>Type in a link you want to optimize-load and hit "Store"</li>
+        <li>
+          Once storing process finishes, hard-reload your page to see images
+          load. (turn on Network throttling in Dev Tools to see the effect more
+          clearly)
+        </li>
+      </Instructions>
+
       <Flex row>
         <TextInput
           style={{ marginRight: 8 }}
