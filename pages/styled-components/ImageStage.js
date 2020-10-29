@@ -11,6 +11,7 @@ const ImageStage = styled.div`
   width: 500px;
   height: 500px;
   position: relative;
+  display: block;
 `;
 
 export default ImageStage;

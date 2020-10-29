@@ -2,8 +2,6 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Button from './components/Button';
-import DefaultImage from './components/DefaultImage';
-import OptimizedImage from './components/OptimizedImage';
 import StoredState from './components/StoredState';
 import TextInput from './components/TextInput';
 import Flex from './styled-components/Flex';
@@ -15,21 +13,33 @@ import {
   processResponse,
   setToLocalStorage,
 } from './util/util';
+import createPersistedState from 'use-persisted-state';
+import dynamic from 'next/dynamic';
+
+const DefaultImage = dynamic(() => import('./components/DefaultImage'), {
+  ssr: false,
+});
+const OptimizedImage = dynamic(() => import('./components/OptimizedImage'), {
+  ssr: false,
+});
 
 const IMAGE_KEY = 'imageUrl';
 
 export default function Home() {
   const [url, setUrl] = useState('');
-  const [processedUrl, setProcessedUrl] = useState(null);
   const [fetchingUrl, setFetchingUrl] = useState(false);
   const [urlError, setUrlError] = useState('');
   const [defaultImgSrc, setDefaultImgSrc] = useState(null);
-  const [optimizationData, setOptimizationData] = useState(null);
+  const [optimizationData, setOptimizationData] = createPersistedState(
+    'optimizationData',
+  )(null);
+  const [processedUrl, setProcessedUrl] = createPersistedState('processedUrl')(
+    null,
+  );
 
   useEffect(() => {
     setDefaultImgSrc(loadFromLocalStorage(IMAGE_KEY, null));
     setUrl(loadFromLocalStorage(IMAGE_KEY, ''));
-    setProcessedUrl(loadFromLocalStorage(IMAGE_KEY, null));
   }, []);
 
   const fetchImage = () => {
@@ -47,13 +57,18 @@ export default function Home() {
     setTimeout(() => {
       // TODO: progress bar
       axios
-        .get(url)
+        .get(url, {
+          responseType: 'arraybuffer',
+        })
         .then((response) => {
-          const result = processResponse(response);
-          setOptimizationData(result);
-          setFetchingUrl(false);
-          setToLocalStorage(IMAGE_KEY, url);
-          setProcessedUrl(url);
+          processResponse(response, url).then((result) => {
+            if (result) {
+              setOptimizationData(result);
+              setProcessedUrl(url);
+              setFetchingUrl(false);
+              setToLocalStorage(IMAGE_KEY, url);
+            }
+          });
         })
         .catch((error) => {
           setFetchingUrl(false);
