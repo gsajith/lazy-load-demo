@@ -12,14 +12,15 @@ const PlaceholderDiv = styled(Flex)`
   transform: translate(-50%, -50%);
   z-index: 0;
   align-items: center;
+  color: blue;
 `;
 
-const DefaultImage = ({ src }) => {
+const OptimizedImage = ({ src }) => {
   return (
     <ImageStage>
       <PlaceholderDiv>
-        <ImageIcon src={'/image_placeholder.svg'} style={{ opacity: 0.2 }} />
-        <ImageMessage>Default loaded image here.</ImageMessage>
+        <ImageIcon src={'/app_icon_placeholder.svg'} />
+        <ImageMessage>Lazy-loaded here.</ImageMessage>
       </PlaceholderDiv>
       {src && (
         <img
@@ -40,4 +41,4 @@ const DefaultImage = ({ src }) => {
   );
 };
 
-export default DefaultImage;
+export default OptimizedImage;

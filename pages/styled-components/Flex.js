@@ -7,7 +7,7 @@ const Flex = styled.div`
     if (props.row) return 'row';
     return 'column';
   }};
-  flex-align: ${(props) => (props.flexAlign ? props.flexAlign : 'center')};
+  align-items: ${(props) => (props.alignItems ? props.alignItems : 'center')};
   justify-content: ${(props) =>
     props.justifyContent ? props.justifyContent : 'center'};
 `;
