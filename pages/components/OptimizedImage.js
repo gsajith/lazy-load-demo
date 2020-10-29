@@ -42,7 +42,7 @@ const OptimizedImage = ({ src, optimizationData }) => {
     <>
       <PlaceholderDiv>
         <ImageIcon src={'/app_icon_placeholder.svg'} />
-        <ImageMessage>Optimized load here.</ImageMessage>
+        <ImageMessage>Blurhash load here.</ImageMessage>
       </PlaceholderDiv>
       <canvas
         ref={canvasRef}
