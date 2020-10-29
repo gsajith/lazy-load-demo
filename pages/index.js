@@ -91,6 +91,11 @@ export default function Home() {
       <Head>
         <title>Lazy Loading Images</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          property="og:description"
+          content="Demo of lazy-loading images with blurhash."
+        />
+        <meta property="og:image" content="https://i.imgur.com/OIGX4XU.png" />
       </Head>
       <Flex row>
         <TextInput
