@@ -96,6 +96,7 @@ export default function Home() {
           content="Demo of lazy-loading images with blurhash."
         />
         <meta property="og:image" content="https://i.imgur.com/OIGX4XU.png" />
+        <meta property="twitter:card" content="summary_large_image" />
       </Head>
       <Flex row>
         <TextInput
