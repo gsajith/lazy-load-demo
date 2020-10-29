@@ -15,7 +15,7 @@ import {
   loadFromLocalStorage,
   processResponse,
   setToLocalStorage,
-} from './util/util';
+} from '../util/util';
 
 const DefaultImage = dynamic(() => import('./components/DefaultImage'), {
   ssr: false,
