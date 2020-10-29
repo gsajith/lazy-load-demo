@@ -3,15 +3,18 @@ import styled from 'styled-components';
 import LoadingSpinner from '../styled-components/LoadingSpinner';
 
 const StyledButton = styled.button`
-  background: ${(props) => (props.disabled ? '#ccc' : 'black')};
-  color: white;
+  background: ${(props) =>
+    props.disabled ? '#ccc' : props.outlined ? 'transparent' : 'black'};
+  color: ${(props) => (props.outlined ? 'black' : 'white')};
+  border: 2px solid black;
   padding: 12px 16px;
   border-radius: 8px;
   cursor: ${(props) => (props.disabled ? 'inherit' : 'pointer')};
   transition: 200ms ease all;
   &:hover,
   &:focus {
-    background: ${(props) => (props.disabled ? '#ccc' : '#555')};
+    background: ${(props) =>
+      props.disabled ? '#ccc' : props.outlined ? '#aaa' : '#555'};
   }
   font-weight: 700;
   text-transform: uppercase;
@@ -27,7 +30,7 @@ const ParentWrapper = styled.div`
 `;
 
 const Button = (props) => {
-  const { children, loading, ...other } = props;
+  const { children, loading, outlined, ...other } = props;
   const buttonRef = useRef(null);
   useEffect(() => {
     if (!loading) {
@@ -35,7 +38,7 @@ const Button = (props) => {
     }
   }, [loading]);
   return (
-    <StyledButton ref={buttonRef} {...other}>
+    <StyledButton ref={buttonRef} {...other} outlined={outlined}>
       <ParentWrapper>
         {loading && (
           <LoadingSpinner

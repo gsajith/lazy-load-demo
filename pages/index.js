@@ -17,11 +17,15 @@ import {
   setToLocalStorage,
 } from '../util/util';
 import Instructions from './styled-components/Instructions';
+import ButtonGroup from './components/ButtonGroup';
 
 const DefaultImage = dynamic(() => import('./components/DefaultImage'), {
   ssr: false,
 });
 const OptimizedImage = dynamic(() => import('./components/OptimizedImage'), {
+  ssr: false,
+});
+const LazySizesImage = dynamic(() => import('./components/LazySizesImage'), {
   ssr: false,
 });
 
@@ -40,6 +44,10 @@ export default function Home() {
   const [processedUrl, setProcessedUrl] = createPersistedState('processedUrl')(
     null,
   );
+  const [optimizationMode, setOptimizationMode] = createPersistedState(
+    'optimizationMode',
+  )('none');
+  const optimizationModes = ['none', 'blurhash', 'lazysizes'];
 
   useEffect(() => {
     // Set processed values on first load
@@ -122,17 +130,33 @@ export default function Home() {
         </Button>
       </Flex>
       {url === processedUrl && (
-        <div style={{ marginTop: 8 }}>Ready to render. Do a hard-refresh.</div>
+        <>
+          <ButtonGroup
+            options={optimizationModes}
+            setSelected={setOptimizationMode}
+            selected={optimizationMode}
+          />
+
+          <div style={{ marginTop: 8 }}>
+            Ready to render. Do a hard-refresh.
+          </div>
+        </>
       )}
       <Flex row style={{ marginTop: 16 }}>
         <ImageStage>
-          <DefaultImage src={defaultImgSrc} />
-        </ImageStage>
-        <ImageStage>
-          <OptimizedImage
-            src={defaultImgSrc}
-            optimizationData={optimizationData}
-          />
+          {optimizationMode === 'none' && <DefaultImage src={defaultImgSrc} />}
+          {optimizationMode === 'blurhash' && (
+            <OptimizedImage
+              src={defaultImgSrc}
+              optimizationData={optimizationData}
+            />
+          )}
+          {optimizationMode === 'lazysizes' && (
+            <LazySizesImage
+              src={defaultImgSrc}
+              optimizationData={optimizationData}
+            />
+          )}
         </ImageStage>
       </Flex>
     </Wrapper>
