@@ -58,15 +58,16 @@ const encodeImageToBlurhash = async (imageUrl) => {
   const image = await loadImage(imageUrl);
   const imageData = getImageData(image);
 
-  const smallImageWidth = Math.min(40, Math.floor(imageData.width / 10));
+  const smallImageWidth = Math.min(10, Math.floor(imageData.width / 20));
   let smallImageHeight;
-  if (smallImageWidth === 40) {
-    smallImageHeight = (40 / imageData.width) * imageData.height;
+  if (smallImageWidth === 10) {
+    smallImageHeight = (10 / imageData.width) * imageData.height;
   } else {
-    smallImageHeight = Math.floor(imageData.height) / 10;
+    smallImageHeight = Math.floor(imageData.height) / 20;
   }
 
   const smallerImage = imageToDataUri(image, smallImageWidth, smallImageHeight);
+
   return {
     blurhash: encode(imageData.data, imageData.width, imageData.height, 4, 4),
     width: imageData.width,
