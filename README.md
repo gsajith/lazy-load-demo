@@ -1,5 +1,4 @@
 ## Optimize-load Demo
-
 Comparison of normal-loading image vs. image with a blurhash canvas placeholder.
 Built with NextJS.
 
